@@ -8,9 +8,9 @@ export async function POST(request: Request) {
   try {
     await dbConnect();
     const body = await request.json();
-    const { name, date, location, description, capacity } = body;
+    const { name, date, location, description, capacity , time } = body;
     // Input Validation
-    if (!name || !date || !location || !description || !capacity) {
+    if (!name || !date || !location || !description || !capacity || !time) {
       return new Response(
         JSON.stringify({ message: 'All Fields are required', statusCode: 400, data: [] }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
@@ -24,6 +24,7 @@ export async function POST(request: Request) {
       location,
       description,
       capacity,
+      time
     });
 
     await event.save();
@@ -107,7 +108,7 @@ export async function PUT(req: Request) {
     const body = await req.json();
 
     // Destructure the body to extract the fields (some may be optional)
-    const { _id, name, date, location, description, capacity } = body;
+    const { _id, name, date, location, description, capacity,time } = body;
 
     // Ensure the `id` field is provided, as it's required for identifying the event to update
     if (!_id) {
@@ -131,6 +132,7 @@ export async function PUT(req: Request) {
     if (location) updateData.location = location;
     if (description) updateData.description = description;
     if (capacity) updateData.capacity = capacity;
+    if (time) updateData.time = time
 
     // Find the event by ID and update it with the fields provided
     const updatedEvent = await Event.findByIdAndUpdate(

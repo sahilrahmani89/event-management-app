@@ -5,7 +5,7 @@ import  { EventFormValues } from '@/app/components/event/EventForm';
 import useSectionRefs from "./useMoveToSection";
 
 const useHomePage = () =>{
-    const [events, setEvents] = useState<EventFormValues[]>([]);
+  const [events, setEvents] = useState<EventFormValues[]>([]);
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -40,7 +40,6 @@ const useHomePage = () =>{
     } catch (error) {
       console.error('Error adding event:', error);
       showToast('Something Went Wrong','error')
-
     }
   };
 

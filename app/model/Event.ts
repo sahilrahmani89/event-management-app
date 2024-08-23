@@ -6,6 +6,7 @@ interface IEvent {
   location: string;
   description: string;
   capacity: number;
+  time:string
 }
 
 const eventSchema = new Schema<IEvent>({
@@ -16,7 +17,11 @@ const eventSchema = new Schema<IEvent>({
   },
   date: {
     type: Date,
-    required: [true, 'Date and time are required'],
+    required: [true, 'Date is required'],
+  },
+  time: {
+    type: String,
+    required: [true, 'Time is required'],
   },
   location: {
     type: String,
