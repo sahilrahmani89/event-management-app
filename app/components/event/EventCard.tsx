@@ -1,11 +1,12 @@
 import { useRouter } from 'next/navigation';
 import { EventFormValues } from './EventForm';
 import { formattedDate } from '@/app/utils/datefun';
+import Link from 'next/link';
 
 
 interface EventCardProps {
     event: EventFormValues;
-    onEdit: (event: EventFormValues) => void;
+    onEdit?: (event: EventFormValues) => void;
     onDelete: (id: string) => void;
 }
 
@@ -51,18 +52,30 @@ const EventCard: React.FC<EventCardProps> = ({ event, onEdit, onDelete }) => {
         </p>
 
         <div className="flex justify-between space-x-2">
-            <button
+            {/* <button
                 onClick={handleViewDetails}
                 className="flex-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-300"
             >
                 View
-            </button>
-            <button
+            </button> */}
+            <Link
+                href={`/event/detail/${event?._id}`}
+                className="flex-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-300 text-center"
+            >
+                View
+            </Link>
+            <Link
+                href={`/event/edit/${event._id}`}
+                className="flex-1 px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors duration-300 text-center"
+            >
+                Edit
+            </Link>
+            {/* <button
                 onClick={() => onEdit(event)}
                 className="flex-1 px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors duration-300"
             >
                 Edit
-            </button>
+            </button> */}
             <button
                 onClick={() => onDelete(event._id || '')}
                 className="flex-1 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-300"

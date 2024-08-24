@@ -1,12 +1,13 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface EventFormProps {
     onSubmit: (values: EventFormValues) => void;
     initialValues?: EventFormValues | null | undefined;
     isEditing?: boolean;
-    registerRef: (name: string, ref: HTMLElement | null) => void;
+    registerRef?: (name: string, ref: HTMLElement | null) => void;
 }
 
 export interface EventFormValues {
@@ -34,7 +35,8 @@ const EventForm: React.FC<EventFormProps> = ({ onSubmit, initialValues, isEditin
         description: Yup.string().required('Required'),
         capacity: Yup.number().required('Required').min(1, 'At least 1'),
     });
-    const sectionRef = useRef<HTMLDivElement | null>(null);
+  
+    const router = useRouter()
 
     useEffect(() => {
         if (initialValues?.date) {
@@ -42,14 +44,15 @@ const EventForm: React.FC<EventFormProps> = ({ onSubmit, initialValues, isEditin
         }
     }, [initialValues]);
 
-    useEffect(() => {
-        registerRef('form-header', sectionRef.current);
-    }, [registerRef]);
+   
 
+    const handleCancel = () =>{
+        router.back()
+    }
     return (
-        <div ref={sectionRef}>
+        <div >
             <Formik
-                initialValues={initialValues || { name: '', date: '' ,time:'', location: '', description: '', capacity: 1 }}
+                initialValues={initialValues || { name: '', date: '' ,time:'', location: '', capacity: 1 , description: ''}}
                 validationSchema={validationSchema}
                 enableReinitialize
                 onSubmit={(values, { resetForm }) => {
@@ -91,16 +94,18 @@ const EventForm: React.FC<EventFormProps> = ({ onSubmit, initialValues, isEditin
                                 <ErrorMessage name="location" component="div" className="text-red-500 text-sm" />
                             </div>
 
-                            <div className="flex flex-col gap-2">
-                                <label htmlFor="description" className="font-medium text-gray-700">Description</label>
-                                <Field name="description" as="textarea" className="input px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter event description" rows="4" />
-                                <ErrorMessage name="description" component="div" className="text-red-500 text-sm" />
-                            </div>
+                            
 
                             <div className="flex flex-col gap-2">
                                 <label htmlFor="capacity" className="font-medium text-gray-700">Capacity</label>
                                 <Field name="capacity" type="number" className="input px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter capacity" />
                                 <ErrorMessage name="capacity" component="div" className="text-red-500 text-sm" />
+                            </div>
+
+                            <div className="flex flex-col gap-2">
+                                <label htmlFor="description" className="font-medium text-gray-700">Description</label>
+                                <Field name="description" as="textarea" className="input px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter event description" rows="4" />
+                                <ErrorMessage name="description" component="div" className="text-red-500 text-sm" />
                             </div>
                         </div>
 
@@ -112,7 +117,16 @@ const EventForm: React.FC<EventFormProps> = ({ onSubmit, initialValues, isEditin
                             >
                                 {isEditing ? 'Update' : 'Submit'}
                             </button>
+
+                            <button
+                                type='button'
+                                onClick={handleCancel}
+                                className="w-full max-w-[350px] py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition duration-300 ml-3"
+                            >
+                                Cancel
+                            </button>
                         </div>
+                        
                     </Form>
                 )}
             </Formik>
