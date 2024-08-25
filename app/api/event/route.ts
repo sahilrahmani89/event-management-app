@@ -1,10 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import dbConnect from '@/app/lib/mongoose';
 import Event from '@/app/model/Event';
+import { NextRequest } from 'next/server';
 
 
-
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     await dbConnect();
     const body = await request.json();
@@ -42,7 +42,7 @@ export async function POST(request: Request) {
 }
 
 // GET all events or a specific event by ID
-export async function GET(request: NextApiRequest) {
+export async function GET(request:NextRequest) {
   try {
     await dbConnect();
 
